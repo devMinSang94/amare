@@ -13,7 +13,7 @@ public class User
     int user_age;
     String user_address;
     String user_sex;
-    String user_height;
+    int user_height;
     String user_tag;
 
 }
