@@ -10,8 +10,11 @@
 
     <!-- 회원가입 폼을 회원 DB에 넣는 Insert문 -->
     <insert id="insertUser" parameterType="com.example.amare.dto.User" >
-        INSERT INTO user VALUES (#{user_id},#{user_password}, #{user_nickname}, #{user_age}, #{user_address}, #{user_sex}, #{user_height}, #{user_tag})
+        INSERT INTO user VALUES (#{user_id},#{user_password}, #{user_nickname}, #{user_age},
+                                 #{user_address}, #{user_sex}, #{user_height}, #{user_tag1}, #{user_tag1_probability},
+                                 #{user_tag2}, #{user_tag2_probability},#{user_tag3}, #{user_tag3_probability})
     </insert>
+
 
     <select id="findUserById" resultType="com.example.amare.dto.User">
         SELECT * FROM user where user_id = #{id}

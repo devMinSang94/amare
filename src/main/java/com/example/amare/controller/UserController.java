@@ -4,13 +4,9 @@ import com.example.amare.dao.UserDao;
 import com.example.amare.dto.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +34,7 @@ public class UserController
         {
             // DB에 User 정보 삽입
             userDao.insertUser(user);
+
             result.put("result", "success");
         } catch (Exception e)
         {
