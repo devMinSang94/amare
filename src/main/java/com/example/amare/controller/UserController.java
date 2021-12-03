@@ -2,8 +2,7 @@ package com.example.amare.controller;
 
 import com.example.amare.dao.UserDao;
 import com.example.amare.dto.User;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +21,26 @@ public class UserController
 
     // 회원가입
     @ApiOperation(value = "클라이언트에서 회원정보를 가져와 DB에 저장하는 메서드 ", notes = "성공시 {'result' : 'success' } 실패시 {'result' : 'fail'} 을 반환합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "user_id", value = "사용 아이디,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_password", value = "사용자 비밀번호,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_nickname", value = "사용자 닉네임,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_age", value = "사용자 나이,", required = true, dataType = "Int"),
+            @ApiImplicitParam(name = "user_address", value = "사용자 주소,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_sex", value = "사용자 성별,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_height", value = "사용자 키,", required = true, dataType = "Int"),
+            @ApiImplicitParam(name = "user_tag1", value = "사용자 연예인 태그1,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_tag1_probability", value = "사용자 연예인 태그1 확률 ,", required = true, dataType = "Float"),
+            @ApiImplicitParam(name = "user_tag2", value = "사용자 연예인 태그2,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_tag2_probability", value = "사용자 연예인 태그2 확률 ,", required = true, dataType = "Float"),
+            @ApiImplicitParam(name = "user_tag3", value = "사용자 연예인 태그3,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_tag3_probability", value = "사용자 연예인 태그3 확률 ,", required = true, dataType = "Float")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 400, message = "잘못된 접근"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
     @PostMapping("/register")
     public Map<String, String> user_register(@RequestBody User user)
     {
@@ -56,8 +75,17 @@ public class UserController
     }
 
     @ApiOperation(value = "클라이언트에서 아이디 비밀번호를 가져와 DB와 검사 결과를 반환하는 메서드", notes = "성공시 {'result' : 'success' } 실패시 {'result' : 'fail'} 을 반환합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "user_id", value = "사용 아이디,", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "user_password", value = "사용자 비밀번호,", required = true, dataType = "String")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그인 성공"),
+            @ApiResponse(code = 400, message = "잘못된 접근"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
     @PostMapping("/login")
-    public Map<String, String> user_login( @RequestBody Map<String, String> GivenId)
+    public Map<String, String> user_login(@RequestBody Map<String, String> GivenId)
     {
         Map<String, String> result = new HashMap<>();
 
