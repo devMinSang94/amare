@@ -33,22 +33,22 @@ public class User
     String user_tag1;
 
 
-    @ApiModelProperty(value = "사용자 연예인 태그1 확률 ", example = "손나은", required = true)
+    @ApiModelProperty(value = "사용자 연예인 태그1 확률 ", example = "90.2", required = true)
     float user_tag1_probability;
 
 
-    @ApiModelProperty(value = "사용자 연예인 태그2 ", example = "손나은", required = true)
+    @ApiModelProperty(value = "사용자 연예인 태그2 ", example = "아이유", required = true)
     String user_tag2;
 
 
-    @ApiModelProperty(value = "사용자 연예인 태그2 확률 ", example = "손나은", required = true)
+    @ApiModelProperty(value = "사용자 연예인 태그2 확률 ", example = "77.6", required = true)
     float user_tag2_probability;
 
 
-    @ApiModelProperty(value = "사용자 연예인 태그1 ", example = "손나은", required = true)
+    @ApiModelProperty(value = "사용자 연예인 태그3 ", example = "수지", required = true)
     String user_tag3;
 
 
-    @ApiModelProperty(value = "사용자 연예인 태그1 확률 ", example = "손나은", required = true)
+    @ApiModelProperty(value = "사용자 연예인 태그3 확률 ", example = "68.6", required = true)
     float user_tag3_probability;
 }
