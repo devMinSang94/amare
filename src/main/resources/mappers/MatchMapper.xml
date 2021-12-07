@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.amare.dao.MatchDao">
+    <!--namespace를 통해 MatchDao와 연결합니다. -->
+
+    <!-- 매치한 회원을 매치 DB에 넣는 쿼리  -->
+    <insert id="insertMatch" parameterType="com.example.amare.dto.Match" >
+        INSERT INTO `match` VALUES (#{match_myid}, #{match_selectedid})
+    </insert>
+
+    <select id="ConfirmMatch" parameterType="com.example.amare.dto.Match" >
+        SELECT match_selectedid from `match` where match_myid = #{match_selectedid}
+    </select>
+</mapper>
