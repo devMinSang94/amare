@@ -5,5 +5,5 @@ import com.example.amare.dto.Match;
 public interface MatchDao
 {
     void insertMatch(Match match);
-    Boolean ConfirmMatch(Match match);
+    String ConfirmMatch(Match match);
 }

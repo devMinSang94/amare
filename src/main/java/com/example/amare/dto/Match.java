@@ -8,5 +8,5 @@ import lombok.Data;
 public class Match
 {
     String match_myid;
-    String match_selectedid;
+    String match_selected_id;
 }

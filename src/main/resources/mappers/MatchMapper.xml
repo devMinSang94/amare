@@ -6,10 +6,10 @@
 
     <!-- 매치한 회원을 매치 DB에 넣는 쿼리  -->
     <insert id="insertMatch" parameterType="com.example.amare.dto.Match" >
-        INSERT INTO `match` VALUES (#{match_myid}, #{match_selectedid})
+        INSERT INTO `match` VALUES (#{match_myid}, #{match_selected_id})
     </insert>
 
-    <select id="ConfirmMatch" parameterType="com.example.amare.dto.Match" >
-        SELECT match_selectedid from `match` where match_myid = #{match_selectedid}
+    <select id="ConfirmMatch" parameterType="com.example.amare.dto.Match" resultType="java.lang.String">
+        SELECT match_selected_id from `match` where match_myid = #{match_selected_id}
     </select>
 </mapper>

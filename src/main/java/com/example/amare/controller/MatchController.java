@@ -4,6 +4,7 @@ import com.example.amare.dao.MatchDao;
 import com.example.amare.dao.RoomDao;
 import com.example.amare.dto.Match;
 import io.swagger.annotations.Api;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,14 @@ public class MatchController
     @Autowired
     private RoomDao roomdao;
 
+    /*
+        "/api/match"
+        - 내가 상대방을 매칭시 DB에 매칭 정보를 삽입함 ( MatchDao.insertMatch)
+        - 만약 상대방이 나를 매칭(MatchDao.ConfirmMatch) 했다면 채팅방을 생성 (Room.insertRoom)
+        - 그 채팅방에 해당하는 멤버 DB 를 매칭된 사용자들의 정보를 넣어줌 (Member.insertMember)
+
+
+     */
     @PostMapping("/match")
     public Map<String, String> match(@RequestBody Match matchUser)
     {
@@ -34,12 +43,19 @@ public class MatchController
         {
             // DB에 매치한 아이디를 추가함
             matchdao.insertMatch(matchUser);
-
+            String confirm = matchdao.ConfirmMatch(matchUser);
+            System.out.println(confirm);
             // 만약 상대방이 나를 매칭 했으면 채팅방 생성
                 if (matchUser.getMatch_myid().equals(matchdao.ConfirmMatch(matchUser)))
                 {
+                    // 채팅방 생성 Auto_increment 로 자동생성후
+                    // 가장 최근에 만들어진 채팅방 번호를 가져온다.
                     roomdao.insertRoom();
-                    System.out.println(roomdao.selectRoom());
+                    int roomNo = roomdao.selectRoom();
+                    System.out.println("roomNo : "+roomNo);
+
+                    // 매칭된 회원을 만들어진 채팅방 멤버로 insert
+
                 }
             result.put("result","success");
         }catch (Exception e)
