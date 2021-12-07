@@ -1,8 +1,10 @@
 package com.example.amare.controller;
 
 import com.example.amare.dao.MatchDao;
+import com.example.amare.dao.MemberDao;
 import com.example.amare.dao.RoomDao;
 import com.example.amare.dto.Match;
+import com.example.amare.dto.Member;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class MatchController
     private MatchDao matchdao;
     @Autowired
     private RoomDao roomdao;
+    @Autowired
+    private MemberDao memberdao;
 
     /*
         "/api/match"
@@ -48,13 +52,22 @@ public class MatchController
             // 만약 상대방이 나를 매칭 했으면 채팅방 생성
                 if (matchUser.getMatch_myid().equals(matchdao.ConfirmMatch(matchUser)))
                 {
+                    // Start Room insert
                     // 채팅방 생성 Auto_increment 로 자동생성후
                     // 가장 최근에 만들어진 채팅방 번호를 가져온다.
                     roomdao.insertRoom();
                     int roomNo = roomdao.selectRoom();
-                    System.out.println("roomNo : "+roomNo);
 
-                    // 매칭된 회원을 만들어진 채팅방 멤버로 insert
+                    // Start 매칭된 회원을 만들어진 채팅방 멤버로 insert
+                    // End Room insert
+
+                    Member member1 = new Member(roomNo, matchUser.getMatch_myid());
+                    Member member2 = new Member(roomNo, matchUser.getMatch_selected_id());
+
+                    memberdao.insertMember(member1);
+                    memberdao.insertMember(member2);
+
+                    // End 매칭된 회원을 만들어진 채팅방 멤버로 insert
 
                 }
             result.put("result","success");
