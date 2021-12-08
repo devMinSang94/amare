@@ -6,7 +6,6 @@ import com.example.amare.dao.RoomDao;
 import com.example.amare.dto.Match;
 import com.example.amare.dto.Member;
 import io.swagger.annotations.Api;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
