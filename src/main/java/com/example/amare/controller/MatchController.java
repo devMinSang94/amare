@@ -33,8 +33,6 @@ public class MatchController
         - 내가 상대방을 매칭시 DB에 매칭 정보를 삽입함 ( MatchDao.insertMatch)
         - 만약 상대방이 나를 매칭(MatchDao.ConfirmMatch) 했다면 채팅방을 생성 (Room.insertRoom)
         - 그 채팅방에 해당하는 멤버 DB 를 매칭된 사용자들의 정보를 넣어줌 (Member.insertMember)
-
-
      */
     @PostMapping("/match")
     public Map<String, String> match(@RequestBody Match matchUser)

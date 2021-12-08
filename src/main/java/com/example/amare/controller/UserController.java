@@ -2,6 +2,7 @@ package com.example.amare.controller;
 
 import com.example.amare.dao.UserDao;
 import com.example.amare.dto.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -85,10 +86,10 @@ public class UserController
             @ApiResponse(code = 500, message = "서버 에러")
     })
     @PostMapping("/login")
-    public Map<String, String> user_login(@RequestBody Map<String, String> GivenId)
+    public Map<String, Object> user_login(@RequestBody Map<String, String> GivenId)
     {
-        Map<String, String> result = new HashMap<>();
-
+        Map<String, Object> result = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
         // 로그인
         try
         {
@@ -105,15 +106,12 @@ public class UserController
                     // pw 일치 회원 로그인 가능
                     System.out.println("로그인 연결성공");
 
-                    //세션이 있으면 있는 세션 반환, 없으면 신규 세션 생성
-                    //HttpSession session = request.getSession();
-                    // 세션에 아이디 정보를 담는다.
-                    //session.setAttribute("user",FindedUser.getUser_id());
-                    //System.out.println("session-attribute: "+session.getAttribute("user"));
-                    //System.out.println(session.getCreationTime());
-                    // 세션값과 성공 메세지 반환
-                    //result.put("token", session.getAttribute("user").toString());
-                    result.put("result", "success");
+                    User loginedUser = userDao.findUserById(GivenId.get("user_id"));
+                    String jsonloginedUser = mapper.writeValueAsString(loginedUser);
+                    System.out.println(loginedUser.toString());
+
+                    result.put("user", jsonloginedUser);
+                    result.put("result","success");
                 } else
                 {
                     // pw 불 일치 회원 로그인 불가
