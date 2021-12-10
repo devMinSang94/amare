@@ -196,12 +196,29 @@ public class UserController
     @GetMapping("/getprofile")
     public  ResponseEntity<Resource> GetProfileImg(@RequestParam String user_id, HttpServletRequest request) throws IOException
     {
+        String os = System.getProperty("os.name").toLowerCase();
         System.out.println("user_id : " + user_id);
+        String realPath = "";
+        String relativeFolder = "";
 
-        String realPath = request.getServletContext().getRealPath("/");
-        System.out.println("realPath : " + realPath);
-        String relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
-        System.out.println("relativeFolder : " + relativeFolder);
+        // 로컬 환경 테스트 Mac
+        if (os == "mac os x"){
+            realPath = request.getServletContext().getRealPath("/");
+            System.out.println("realPath : " + realPath);
+            relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
+            System.out.println("relativeFolder : " + relativeFolder);
+        }
+        else // 리눅스 서버일 경우
+        {
+            realPath = "/home/ubuntu/amare/src/main/webapp";
+            relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
+
+        }
+//
+//        String realPath = request.getServletContext().getRealPath("/");
+//        System.out.println("realPath : " + realPath);
+//        String relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
+//        System.out.println("relativeFolder : " + relativeFolder);
 
         Resource resource = new UrlResource("file:" + realPath+ relativeFolder+ user_id + ".jpg");
 
