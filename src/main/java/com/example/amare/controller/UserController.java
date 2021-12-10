@@ -4,9 +4,24 @@ import com.example.amare.dao.UserDao;
 import com.example.amare.dto.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +81,34 @@ public class UserController
 
     }
 
+    @PostMapping("/upload_photo")
+    public Map<String, String> UploadImage(@RequestParam("photo") MultipartFile file, HttpServletRequest request)
+    {
+        Map<String, String> result = new HashMap<>();
+
+        try
+        {
+
+            String realPath = request.getServletContext().getRealPath("/");
+            System.out.println("realPath : " + realPath);
+            String relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
+            System.out.println("relativeFolder : " + relativeFolder);
+            File dest = new File(realPath + relativeFolder + file.getOriginalFilename());
+
+
+            file.transferTo(dest);
+            result.put("result", "success");
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            result.put("result", "fail");
+        }
+        return result;
+
+
+    }
+
 
     // 유저 확인
     @PostMapping("/user")
@@ -111,7 +154,7 @@ public class UserController
                     System.out.println(loginedUser.toString());
 
                     result.put("user", jsonloginedUser);
-                    result.put("result","success");
+                    result.put("result", "success");
                 } else
                 {
                     // pw 불 일치 회원 로그인 불가
@@ -134,6 +177,23 @@ public class UserController
         System.out.println(result.get("result"));
         return result;
     }
+
+
+    @GetMapping("/getprofile")
+    public  ResponseEntity<Resource> GetProfileImg(@RequestParam String user_id, HttpServletRequest request) throws IOException
+    {
+        System.out.println("user_id : " + user_id);
+
+        String realPath = request.getServletContext().getRealPath("/");
+        System.out.println("realPath : " + realPath);
+        String relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
+        System.out.println("relativeFolder : " + relativeFolder);
+
+        Resource resource = new UrlResource("file:" + realPath+ relativeFolder+ user_id + ".jpg");
+
+        return ResponseEntity.ok().body(resource);
+    }
+
 
 
 }
