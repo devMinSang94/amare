@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Api(tags = {"User 정보를 제공하는 Controller"})
@@ -86,13 +87,26 @@ public class UserController
     {
         Map<String, String> result = new HashMap<>();
 
+        String os = System.getProperty("os.name").toLowerCase();
+        System.out.println(os);
         try
         {
+            String realPath = "";
+            String relativeFolder = "";
+            // 로컬 환경 테스트 Mac
+            if (os == "mac os x"){
+                realPath = request.getServletContext().getRealPath("/");
+                System.out.println("realPath : " + realPath);
+                relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
+                System.out.println("relativeFolder : " + relativeFolder);
+            }
+            else // 리눅스 서버일 경우
+            {
+                realPath = "/home/ubuntu/amare/src/main/webapp";
+                relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
 
-            String realPath = request.getServletContext().getRealPath("/");
-            System.out.println("realPath : " + realPath);
-            String relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
-            System.out.println("relativeFolder : " + relativeFolder);
+            }
+
             File dest = new File(realPath + relativeFolder + file.getOriginalFilename());
 
 
