@@ -5,14 +5,16 @@ import com.example.amare.dao.MemberDao;
 import com.example.amare.dao.RoomDao;
 import com.example.amare.dto.Match;
 import com.example.amare.dto.Member;
+import com.example.amare.dto.User;
+import com.example.amare.dto.User_tags;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Api(tags = {"Match 정보를 제공하는 Controller"})
@@ -47,32 +49,57 @@ public class MatchController
             String confirm = matchdao.ConfirmMatch(matchUser);
             System.out.println(confirm);
             // 만약 상대방이 나를 매칭 했으면 채팅방 생성
-                if (matchUser.getMatch_myid().equals(matchdao.ConfirmMatch(matchUser)))
-                {
-                    // Start Room insert
-                    // 채팅방 생성 Auto_increment 로 자동생성후
-                    // 가장 최근에 만들어진 채팅방 번호를 가져온다.
-                    roomdao.insertRoom();
-                    int roomNo = roomdao.selectRoom();
+            if (matchUser.getMatch_myid().equals(matchdao.ConfirmMatch(matchUser)))
+            {
+                // Start Room insert
+                // 채팅방 생성 Auto_increment 로 자동생성후
+                // 가장 최근에 만들어진 채팅방 번호를 가져온다.
+                roomdao.insertRoom();
+                int roomNo = roomdao.selectRoom();
 
-                    // Start 매칭된 회원을 만들어진 채팅방 멤버로 insert
-                    // End Room insert
+                // Start 매칭된 회원을 만들어진 채팅방 멤버로 insert
+                // End Room insert
 
-                    Member member1 = new Member(roomNo, matchUser.getMatch_myid());
-                    Member member2 = new Member(roomNo, matchUser.getMatch_selected_id());
+                Member member1 = new Member(roomNo, matchUser.getMatch_myid());
+                Member member2 = new Member(roomNo, matchUser.getMatch_selected_id());
 
-                    memberdao.insertMember(member1);
-                    memberdao.insertMember(member2);
+                memberdao.insertMember(member1);
+                memberdao.insertMember(member2);
+                result.put("chat","true");
+                // End 매칭된 회원을 만들어진 채팅방 멤버로 insert
 
-                    // End 매칭된 회원을 만들어진 채팅방 멤버로 insert
-
-                }
-            result.put("result","success");
-        }catch (Exception e)
+            }
+            result.put("result", "success");
+            result.put("chat","false");
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
         return result;
     }
 
+    @PostMapping("/getmatchusers")
+    Map<String, Object> GetMatchUsers(@RequestBody Map<String,ArrayList<String>> user_tags)
+    {
+
+        Map<String, Object> result = new HashMap<>();
+        System.out.println(user_tags);
+        List<User> users = new ArrayList<>();
+        ArrayList<String> tags = user_tags.get("user_tag");
+        try
+        {
+            for (int i =0 ; i< tags.size(); i++)
+            {
+                users.addAll(matchdao.GetMatchUser(tags.get(i)));
+            }
+            System.out.println(users);
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        result.put("users", users);
+        System.out.println(result);
+        return result;
+    }
 }

@@ -94,7 +94,7 @@ public class UserController
             String realPath = "";
             String relativeFolder = "";
             // 로컬 환경 테스트 Mac
-            if (os == "mac os x"){
+            if (os.equals("mac os x") ){
                 realPath = request.getServletContext().getRealPath("/");
                 System.out.println("realPath : " + realPath);
                 relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
@@ -198,11 +198,12 @@ public class UserController
     {
         String os = System.getProperty("os.name").toLowerCase();
         System.out.println("user_id : " + user_id);
+        System.out.println("os:"+os);
         String realPath = "";
         String relativeFolder = "";
 
         // 로컬 환경 테스트 Mac
-        if (os == "mac os x"){
+        if (os.equals("mac os x")){
             realPath = request.getServletContext().getRealPath("/");
             System.out.println("realPath : " + realPath);
             relativeFolder = File.separator +  "static" + File.separator + "profile"+ File.separator;
