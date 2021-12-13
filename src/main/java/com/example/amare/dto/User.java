@@ -29,6 +29,7 @@ public class User
     @ApiModelProperty(value = "사용자 키", example = "173", required = true)
     int user_height;
 
+
     @ApiModelProperty(value = "사용자 연예인 태그1 ", example = "손나은", required = true)
     String user_tag1;
 

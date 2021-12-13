@@ -5,18 +5,23 @@
     <!--namespace를 통해 MatchDao와 연결합니다. -->
 
     <!-- 매치한 회원을 매치 DB에 넣는 쿼리  -->
-    <insert id="insertMatch" parameterType="com.example.amare.dto.Match" >
-        INSERT INTO `match` VALUES (#{match_myid}, #{match_selected_id})
+    <insert id="SendChat" parameterType="com.example.amare.dto.Chat" >
+        INSERT INTO chat(user_id, room_no, chat_content, chat_createAt, chat_content_emotion) VALUES (#{user_id}, #{room_no}, #{chat_content}, #{chat_createAt}, #{chat_content_emotion} )
     </insert>
 
     <select id="GetChatRoom"  resultType="com.example.amare.dto.Member">
         select * from member where room_no = (select room_no from member where user_id = #{user_id})
     </select>
 
-    <select id="GetMatchUser" resultType="com.example.amare.dto.User">
-        SELECT * from `user` where user_tag1 = #{user_tag}
+    <select id="GetAllChat" resultType="com.example.amare.dto.Chat">
+        SELECT * from `chat` where room_no = #{room_no} order by chat_no
     </select>
 
+    <select id="GetSendChat" resultType="com.example.amare.dto.Chat">
+        SELECT * from chat  where room_no = #{room_no} and chat_no = (select Max(chat_no) from chat where room_no = #{room_no})
+    </select>
 
-
+    <select id="GetLastMessage" resultType="com.example.amare.dto.Chat">
+        SELECT * from chat  where room_no = #{room_no} and chat_no = (select Max(chat_no) from chat where room_no = #{room_no})
+    </select>
 </mapper>
