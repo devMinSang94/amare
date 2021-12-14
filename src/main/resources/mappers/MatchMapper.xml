@@ -17,6 +17,14 @@
         SELECT * from `user` where user_tag1 = #{user_tag}
     </select>
 
+    <select id="GetGivenLikeList" resultType="java.lang.String">
+        select match_myid from `match` where match_selected_id = #{given_id}
+    </select>
+
+    <select id="GetGivenLikeUser" resultType="com.example.amare.dto.User">
+        select * from `user` where user_id = #{given_id}
+    </select>
+
 
 
 </mapper>

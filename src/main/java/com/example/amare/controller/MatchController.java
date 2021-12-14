@@ -102,4 +102,37 @@ public class MatchController
         System.out.println(result);
         return result;
     }
+
+
+
+    @PostMapping("/givenLikeList")
+    public Map<String, Object> GetGivenLikeList (@RequestBody Map<String, String> user)
+    {
+        Map<String, Object> result = new HashMap<>();
+
+        // 나를 좋아하는 유저들의 아이디 리스트
+        ArrayList<String> Users_LikeMe = new ArrayList<>();
+        // 나를 좋아하는 유저들의 객체정보 리스트
+        ArrayList<User> users = new ArrayList<>();
+
+        try{
+            // 1. 나름 좋아하는 유저들을 리스트에 저장
+            Users_LikeMe = matchdao.GetGivenLikeList(user.get("user"));
+            System.out.println("Users_LikeMe"+Users_LikeMe.toString());
+
+            //2. 리스트의 저장된 멤버들의 user 객체를 리스트에 저장하고 response 함
+            for (int i =0; i<Users_LikeMe.size();i++)
+            {
+                users.add(matchdao.GetGivenLikeUser(Users_LikeMe.get(i)));
+
+            }
+            System.out.println("나를좋아하는 유저"+users.toString());
+            result.put("GivenLike",new ObjectMapper().writeValueAsString(users));
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }
+        return result;
+    }
 }
